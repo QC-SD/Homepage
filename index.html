@@ -1,472 +1,514 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>QCSD Qiskit Fall Fest 2026</title>
-
-  <!-- Bootstrap 5 CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-    crossorigin="anonymous"
-  />
-
-  <style>
-    :root {
-      /* Brand palette */
-      --white: #ffffff;
-      --black: #0a0a0a;              /* near-black for better contrast */
-      --silver: #c0c0c0;
-      --ibm-pink: #ff7eb6;           /* IBM Carbon Magenta */
-      --ucsd-blue: #00629b;          /* Triton Blue */
-      --ucsd-gold: #c69214;          /* UCSD Gold */
-
-      /* Derived tokens */
-      --bg-dark: #0b0f14;
-      --bg-darker: #06080c;
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --card-bg: #111827;            /* slate-900 */
-      --border-subtle: rgba(255,255,255,0.08);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-weight: 400;
-      color: var(--text-main);
-      background: var(--bg-dark);
-    }
-
-    /* Full-screen section panels */
-    section.panel {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      padding-top: 5rem; padding-bottom: 2rem; /* space for fixed navbar */
-    }
-
-    /* Navbar */
-    .navbar { background: var(--bg-darker); border-bottom: 1px solid var(--border-subtle); }
-    .navbar-brand { color: var(--white) !important; }
-    .nav-link { color: var(--text-muted) !important; font-weight: 600; }
-    .nav-link:hover { color: var(--white) !important; }
-    .nav-link.active { color: var(--ibm-pink) !important; }
-    .navbar-brand,
-    .nav-link {
-    font-weight: 400 !important; /* normal weight */
-    }
-
-    .navbar.bg-dark {
-      background-color: #06080c !important; /* your new color */
-    }
-
-    .nav-logo {
-      height: 32px;   /* keeps it small in navbar */
-      width: auto;    /* keeps aspect ratio */
-    }
-    /* Hero */
-    #home {
-      background: radial-gradient(1200px 500px at 70% -10%, rgba(238,83,150,0.25), transparent 60%),
-                  radial-gradient(900px 400px at 20% 110%, rgba(0,98,155,0.25), transparent 60%),
-                  linear-gradient(180deg, var(--bg-darker) 0%, #0e1622 60%, #0b0f14 100%);
-    }
-
-    .hero-title { font-weight: 800; letter-spacing: 0.2px; }
-    .hero-subtitle { opacity: 0.92; max-width: 60ch; }
-
-    /* Buttons: UCSD gold with IBM pink */
-    .btn-primary {
-      --bs-btn-bg: var(--ucsd-gold);
-      --bs-btn-border-color: var(--ucsd-gold);
-      --bs-btn-hover-bg: #aa5479;
-      --bs-btn-hover-border-color: #aa5479;
-      --bs-btn-active-bg: #b9820f;
-      --bs-btn-active-border-color: #b9820f;
-      color: var(--black);
-    }
-    .btn-outline-primary {
-      --bs-btn-color: var(--ibm-pink);
-      --bs-btn-border-color: var(--ibm-pink);
-      --bs-btn-hover-bg: var(--ibm-pink);
-      --bs-btn-hover-border-color: var(--ibm-pink);
-      --bs-btn-hover-color: var(--black);
-    }
-
-    .cta-btn { font-size: 1.25rem; padding: 0.9rem 1.4rem; border-radius: 0.85rem; box-shadow: 0 0.5rem 1.25rem rgba(0,0,0,0.28); }
-
-    /* Section backgrounds */
-    .panel.bg-light { background: #0f1622 !important; }
-
-    .section-heading { margin-bottom: 1rem; font-weight: 700; color: var(--white); }
-
-    /* Cards */
-    .team-card { background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 1rem; box-shadow: 0 0.75rem 2rem rgba(2, 6, 23, 0.22); }
-    .team-card .card-title { color: var(--white); }
-    .team-card .text-muted { color: var(--silver) !important; }
-    .link-primary { color: var(--ucsd-blue) !important; }
-    .link-primary:hover { color: var(--ibm-pink) !important; }
-
-    /* Image */
-    .logo-img {
-      display: block;              /* centers with margin auto */
-      margin: 1rem auto;           /* center horizontally */
-      max-width: 50vw;             /* no wider than 50% of screen width */
-      max-height: 50vh;            /* no taller than 50% of screen height */
-      height: auto;                /* keep aspect ratio */
-    }
-
-    .cat-sticker {
-      position: absolute;
-      right: 160px;       /* move cat to the right of button */
-      bottom: -20px;      /* move cat slightly below button */
-      width: 12vw;       /* 12% of screen width */
-      max-width: 110px;
-      height: auto;
-      pointer-events: none;   /* make it non-clickable */
-    }
-    .about-main-img {
-      max-height: 400px;
-     object-fit: contain;
-    }
-
-    .ibm-btn {
-      border: 1px solid var(--border-subtle);
-      background: #0f1622;
-      color: #fff;
-    }
-
-    .ibm-btn:hover {
-      background: #151c28;
-    }
-
-    .ibm-mark {
-      height: 18px;
-      width: auto;
-      display: block;
-    }
-
-    /* calendar */
-    .calendar-frame iframe {
-      width: 100%;
-      height: 450px;
-      border-radius: 0.75rem;
-      border: 1px solid var(--border-subtle);
-    }
-
-    /* Square photos */
-    .team-photo {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-top-left-radius: 1rem;   /* round top corners of the photo */
-      border-top-right-radius: 1rem;
-    }
-
-    /* Icon links */
-    .icon-link {
-      width: 28px;
-      height: 28px;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
-      transition: transform 0.2s ease;
-    }
-    .icon-link:hover { transform: scale(1.1); }
-
-    /* Registration CTA */
-    #registration {
-      background: var(--bg-dark);   /* same static dark background */
-      color: var(--white);
-    }
-
-    #registration .mega-cta {
-      padding: 8rem 1rem;
-    }
-
-    #registration .btn-register {
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      padding: 2rem 3rem;
-      border-radius: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.35);
-      background: var(--ucsd-gold);
-      color: var(--black);
-      border: 2px solid var(--ucsd-gold);
-    }
-    #registration .btn-register:hover {
-      background: var(--ibm-pink);
-      border-color: var(--ibm-pink);
-      color: var(--black);
-    }
-
-    #registration h2 {
-      margin-bottom: 6rem;   /* default Bootstrap often sets mb-4 (1.5rem) */
-      margin-top: -6rem;   /* optional: pull up slightly */
-    }
-
-
-    /* Stickers */
-    .sticker {
-      position: absolute;
-      width: clamp(120px, 20vw, 220px);
-      height: auto;
-      opacity: 0.9;
-      pointer-events: none; /* decorative only */
-    }
-
-    .sticker-left {
-      left: 5%;
-      bottom: 10%;
-    }
-
-    .sticker-right {
-      right: 5%;
-      bottom: 10%;
-    }
-
-    @media (max-width: 768px) {
-      .sticker {
-      width: 90px;
-      opacity: 0.7;
-    }
-
-    .sticker-left { left: 2%; bottom: 5%; }
-    .sticker-right { right: 2%; bottom: 5%; }
-    }
-
-
-    /* Schedule embed frame */
-    .ratio iframe { border-radius: 0.75rem; border: 1px solid var(--border-subtle) !important; background: #0a0f17; }
-
-    /* Alerts */
-    .alert-info { background-color: rgba(0,98,155,0.12); color: #cfe8f6; border-color: rgba(0,98,155,0.25); }
-
-    /* Footer */
-    footer { background: var(--bg-darker); color: var(--silver); border-top: 1px solid var(--border-subtle); }
-  </style>
-  <!-- IBM Plex Sans font to echo IBM design language -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Quantum Computing at UC San Diego is a student club for exploring quantum computing together.">
+  <meta name="theme-color" content="#0b0f14">
+  <title>QCSA</title>
+  <link rel="icon" href="assets/Logo%20Gray.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0b0f14;
+      --surface: #101823;
+      --nav: #06080c;
+      --heading: #f8fafc;
+      --text: #bec7d3;
+      --pink: #ff7eb6;
+      --line: #27313e;
+      --nav-height: 4.5rem;
+      --gutter: clamp(1.25rem, 5vw, 3.5rem);
+      --page-width: 70rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--nav-height);
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font: 1rem/1.6 "IBM Plex Sans", system-ui, sans-serif;
+    }
+
+    a { color: var(--pink); }
+    a:focus-visible { outline: 2px solid var(--pink); outline-offset: 4px; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { color: var(--heading); line-height: 1.1; }
+    h1 {
+      max-width: 16ch;
+      font-size: clamp(2.65rem, 7vw, 6rem);
+      letter-spacing: -0.055em;
+      text-wrap: balance;
+    }
+    h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); letter-spacing: -0.04em; }
+
+    .wrap {
+      width: min(calc(100% - 2 * var(--gutter)), var(--page-width));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 2;
+      inset: 0.5rem auto auto 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--nav);
+      transform: translateY(-200%);
+    }
+
+    .skip-link:focus { transform: none; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--nav);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: calc(var(--nav-height) - 1px);
+    }
+
+    .nav a { color: var(--text); text-decoration: none; }
+    .nav a:hover { color: var(--pink); }
+
+    .nav .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--heading);
+      font-weight: 700;
+    }
+
+    .brand img { width: 2rem; border-radius: 50%; }
+
+    .nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: 0.25rem clamp(0.65rem, 3vw, 2rem);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav li a { display: block; padding-block: 0.4rem; }
+
+    .hero {
+      display: grid;
+      align-items: center;
+      min-height: calc(100vh - var(--nav-height));
+      min-height: calc(100svh - var(--nav-height));
+      padding-block: clamp(3rem, 9vw, 7rem);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(2rem, 6vw, 5rem);
+    }
+
+    .hero img {
+      width: min(100%, 22rem);
+      justify-self: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+    }
+
+    .intro {
+      max-width: 38ch;
+      margin-top: 1.25rem;
+      font-size: clamp(1.125rem, 2vw, 1.375rem);
+    }
+
+    .discord-button {
+      display: inline-block;
+      margin-top: 1.75rem;
+      padding: 0.65rem 1.15rem;
+      border-radius: 0.5rem;
+      background: #5865f2;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .discord-button:hover { background: #4955dc; }
+
+    .panel {
+      padding-block: clamp(3rem, 8vw, 6rem);
+      border-top: 1px solid var(--line);
+    }
+
+    .panel:nth-of-type(even) { background: var(--surface); }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+      gap: clamp(1rem, 4vw, 3rem);
+    }
+
+    .panel p { max-width: 57ch; font-size: 1.125rem; }
+
+    .collaborators, .event-track { margin-top: 2.5rem; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .card-grid li, .track-card {
+      padding: 1rem 1.125rem;
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      background: var(--background);
+    }
+
+    .collaborators .card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .logo-grid li { padding: 0; }
+
+    .logo-grid a {
+      display: grid;
+      place-items: center;
+      height: 100%;
+      padding: 1rem;
+      border-radius: inherit;
+    }
+
+    .logo-grid a:hover { background: #1a2431; }
+
+    .collaborators .logo-grid img {
+      width: min(100%, 11rem);
+      height: 4rem;
+      object-fit: contain;
+    }
+
+    .collaborators .logo-grid .logo-plate {
+      height: auto;
+      padding: 0.5rem;
+      border-radius: 0.35rem;
+      background: #fff;
+    }
+
+    .event-grid { margin-top: 1.5rem; }
+    .event-grid li { background: var(--surface); }
+    .event-grid a { padding: 1.35rem; }
+    .event-grid a:hover { background: #1b2635; }
+
+    .event-grid img {
+      width: min(100%, 9.5rem);
+      border: 4px solid #fff;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 4px 0 #06080c;
+    }
+
+    .activity-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .activity-grid li {
+      display: grid;
+      align-content: start;
+      justify-items: center;
+      gap: 0.7rem;
+      padding: 1rem 0.65rem;
+      color: var(--heading);
+      text-align: center;
+    }
+
+    .sticker-icon {
+      width: 3rem;
+      height: 3rem;
+      padding: 0.4rem;
+      border: 3px solid #fff;
+      border-radius: 0.85rem;
+      background: #fff;
+      box-shadow: 0 3px 0 #354158;
+      color: #273659;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.65;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform: rotate(-7deg);
+    }
+
+    .activity-grid li:nth-child(even) .sticker-icon,
+    .track-card:nth-child(even) .sticker-icon { transform: rotate(7deg); }
+    .sticker-icon .pink { fill: #ff9dca; }
+    .sticker-icon .blue { fill: #93baff; }
+    .sticker-icon .gold { fill: #ffd27a; }
+
+    .track-card {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .track-card strong { color: var(--heading); }
+    .track-card span { display: block; }
+    .track-card .track-note { font-size: 0.875rem; }
+
+    .beginner-card {
+      max-width: 28rem;
+      margin-top: 1rem;
+    }
+
+    .track-card .sticker-icon { flex: 0 0 3rem; }
+
+    footer {
+      padding-block: 1.5rem;
+      background: var(--nav);
+      border-top: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 54rem) {
+      .collaborators .card-grid, .activity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 42rem) {
+      :root { --nav-height: 4rem; }
+      .hero-grid, .panel-grid { grid-template-columns: 1fr; }
+      .hero img { width: clamp(8rem, 42vw, 14rem); justify-self: start; }
+      .collaborators .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 30rem) {
+      .activity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
 </head>
-<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="80" tabindex="0">
+<body>
+  <a class="skip-link" href="#home">Skip to content</a>
 
-  <!-- Navbar -->
-  <nav id="mainNav" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="#home">
-      <img src="assets/Qiskit_03.png" alt="Logo" class="nav-logo me-2">
-      Qiskit Fall Fest at UCSD
+  <header class="site-header">
+    <nav class="wrap nav" aria-label="Main navigation">
+      <a class="brand" href="#home">
+        <img src="assets/Logo%20Gray.png" width="800" height="800" alt="">
+        QCSA
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
-          <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-          <li class="nav-item"><a class="nav-link" href="#registration">Registration</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#events">Events</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <!-- Home -->
-  <section id="home" class="panel">
-    <div class="container text-center">
-    <h1 class="hero-title mb-3" style="color: white;">Quantum Computing at UC San Diego</h1>
-    <img src="assets/Qiskit Fall Fest 2026 Black.png" alt="Qiskit Fall Fest Logo" class="logo-img">
-    <p class="lead mb-4">A month-long celebration of quantum computing: talks, workshops, and hands‑on projects for all levels.</p>
-    <div class="cta-wrap position-relative d-inline-block">
-      <a href="https://forms.gle/ucPUUmWgdj4vhL896" target="_blank" class="btn btn-primary cta-btn">Register Now</a>
-      <img src="assets/Sticker 06.png" alt="Quantum Cat" class="cat-sticker">
-    </div>
-    </div>
+  <main id="home" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div>
+          <h1 id="hero-title">Quantum Computing at UC San Diego</h1>
+          <p class="intro">A student club for exploring quantum computing.</p>
+          <a class="discord-button" href="https://discord.gg/gPfKSezQ56">Discord</a>
+        </div>
+        <img src="assets/Logo%20Gray.png" width="800" height="800" alt="">
+      </div>
     </section>
 
-  <!-- About -->
-  <section id="about" class="panel bg-light">
-    <div class="container">
-      <div class="row align-items-center g-4">
-        
-        <!-- Left: Image -->
-        <div class="col-lg-6 text-center">
-          <img src="assets/Sticker 01.png" alt="Qiskit Fall Fest Flamingo Sticker" 
-               class="img-fluid rounded about-main-img">
+    <section id="about" class="panel" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="panel-grid">
+          <h2 id="about-title">About</h2>
+          <p>QCSA at UC San Diego brings students together to learn about quantum computing and get hands-on with all things quantum computing!</p>
         </div>
-        <!-- Right: Text -->
-        <div class="col-lg-6">
-          <h2 class="section-heading mb-3">About</h2>
-          <p class="fs-5 mb-3">
-            UC San Diego is proud to host Qiskit Fall Fest 2026, supported by IBM Quantum.
-            This event is part of a worldwide, student-led celebration of quantum computing that takes place every Fall.
-          </p>
-          <p class="fs-5 mb-4">
-            At UCSD, Fall Fest will feature hands-on presentations, workshops, and hackathons tailored to different interests and experience levels.
-            Students will use Qiskit, IBM’s open-source SDK, to build and run quantum circuits on real devices.
-            Participants will have the opportunity to join in person or virtually and earn an official IBM Quantum badge.
-          </p>
+        <div class="collaborators">
+          <ul class="card-grid logo-grid" role="list">
+            <li>
+              <a href="https://www.riverlane.com/">
+                <img src="assets/logos/riverlane.svg" alt="Riverlane">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.ibm.com/quantum">
+                <img src="assets/IBM_Quantum/Raster/RGB/IBM_Quantum_logotype_rev_RGB.png" alt="IBM Quantum">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.edencode.ai/">
+                <img src="assets/logos/edencode.svg" alt="EdenCode Inc">
+              </a>
+            </li>
+            <li>
+              <a href="https://qcsa.org/">
+                <img class="logo-plate" src="assets/logos/qcsa.webp" alt="QCSA">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.csusm.edu/">
+                <img src="assets/logos/csusm.png" alt="California State University San Marcos (CSUSM)">
+              </a>
+            </li>
+            <li>
+              <a href="https://oqc.tech/resources/the-rise-of-superconducting-erasure-qubits">
+                <img src="assets/logos/oqc.svg" alt="Dr. Maria Violaris at Oxford Quantum Circuits">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.tausystems.com/">
+                <img src="assets/logos/tau-systems.svg" width="118" height="30" alt="TAU Systems">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-          <!-- Buttons -->
-          <div class="d-flex flex-wrap gap-3">
-            <a class="btn btn-dark d-inline-flex align-items-center gap-2 ibm-btn"
-              href="https://www.ibm.com/quantum/qiskit" target="_blank" rel="noopener"  style = "background-color: white; color: black">
-              <img src="assets/IBM Quantum Logo.png" alt="IBM Quantum" class="ibm-mark">
+    <section id="events" class="panel" aria-labelledby="events-title">
+      <div class="wrap">
+        <h2 id="events-title">Events</h2>
+        <ul class="card-grid logo-grid event-grid" role="list">
+          <li>
+            <a href="https://qc-sd.github.io/Qiskit-Fall-Fest-Website/">
+              <img src="assets/Qiskit%20Fall%20Fest%202026%20Black.png" width="318" height="318" alt="IBM Qiskit Fall Fest 2026">
             </a>
-          </div>
+          </li>
+          <li>
+            <a href="https://today.ucsd.edu/story/student-club-takes-the-leap-into-quantum-computing">
+              <img src="assets/Badge.png" width="1272" height="1272" alt="IBM Qiskit Fall Fest 2025">
+            </a>
+          </li>
+          <li>
+            <a href="https://www.ibm.com/quantum/blog/qiskit-fall-fest-2024">
+              <img src="assets/logos/fall-fest-2024.png" width="280" height="280" alt="IBM Qiskit Fall Fest 2024">
+            </a>
+          </li>
+        </ul>
+        <div class="event-track">
+          <h3>Fall Fest Activities</h3>
+          <ul class="card-grid activity-grid" role="list">
+            <li>
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 6V4h6v2"/>
+                <rect class="pink" x="2.5" y="6" width="19" height="14" rx="3"/>
+                <path d="M3 11a4 4 0 0 0 4 3h10a4 4 0 0 0 4-3"/>
+                <rect x="10" y="12" width="4" height="4" rx="1" fill="white"/>
+              </svg>
+              <strong>Job Fair</strong>
+            </li>
+            <li>
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect class="blue" x="2.5" y="4" width="19" height="14" rx="2"/>
+                <path d="m9 8-3 3 3 3m6-6 3 3-3 3m-2-7-2 8M7 21h10"/>
+              </svg>
+              <strong>Hackathon Team</strong>
+            </li>
+            <li>
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle class="gold" cx="10" cy="10" r="6"/>
+                <path d="m14.5 14.5 5.5 5.5M8 8a3 3 0 0 1 2-1m8-3v4m-2-2h4"/>
+              </svg>
+              <strong>Research Spotlights</strong>
+            </li>
+            <li>
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path class="pink" d="M9 3h6m-5 0v6l-5 8a2.5 2.5 0 0 0 2 4h10a2.5 2.5 0 0 0 2-4l-5-8V3"/>
+                <path d="M7 15h10m-7 3h.01m4-.5h.01"/>
+              </svg>
+              <strong>Live Demos</strong>
+            </li>
+            <li>
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path class="blue" d="M18 3a5 5 0 0 0-6 6L4 17a2.1 2.1 0 0 0 3 3l8-8a5 5 0 0 0 6-6l-3 3-3-3z"/>
+                <path d="m6 18 .1-.1"/>
+              </svg>
+              <strong>Workshops</strong>
+            </li>
+            <li>
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect class="gold" x="9" y="2.5" width="6" height="12" rx="3"/>
+                <path d="M6 11a6 6 0 0 0 12 0m-6 6v4m-3 0h6m-5-14h4m-4 3h4"/>
+              </svg>
+              <strong>Industry Guests</strong>
+            </li>
+          </ul>
         </div>
-      </div>
-
-    
-    </div>
-  </section>
-
-    
-  <!-- Schedule -->
-  <section id="schedule" class="panel">
-    <div class="container">
-      <h2 class="section-heading mb-3">Schedule</h2>
-      <div class="calendar-frame">
-        <iframe src="https://calendar.google.com/calendar/embed?src=c_f17e4bc6a7d6064bb8848458cdcb89fcc27a79a3ecab861de07bfb35eb0d4a8d%40group.calendar.google.com&ctz=America%2FLos_Angeles" style="border: 0" frameborder="0" scrolling="no"></iframe>
-      </div>
-    </div>
-  </section>
-
-  <!-- Team -->
-  <section id="team" class="panel bg-light">
-    <div class="container">
-
-    <!-- Heading -->
-    <div class="text-center mb-4">
-      <h2 class="section-heading">Meet the Hosts</h2>
-      <p>Feel free to contact us with any questions!</p>
-    </div>
-
-    <div class="row g-4 justify-content-center">
-      <!-- Minnie -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <div class="card team-card h-100 text-center">
-          <img src="assets/Minnie.jpg" alt="I-Shan Tsai" class="team-photo">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">I-Shan (Minnie) Tsai</h5>
-            <div class="text-muted mb-3">Lead Organizer</div>
-            <div class="mt-auto d-flex justify-content-center gap-3">
-              <a href="mailto:i3tsai@ucsd.edu" aria-label="I-Shan (Minnie) Tsai Email">
-                <img src="assets/mail_icon.png" alt="Email" class="icon-link">
-              </a>
-              <a href="https://www.linkedin.com/in/i-shan-tsai-677753336/" target="_blank" rel="noopener" aria-label="Rebecca Breihan LinkedIn">
-                <img src="assets/linkedin_icon.png" alt="LinkedIn" class="icon-link">
-              </a>
+        <div class="event-track">
+          <h3>Beginner Track</h3>
+          <div class="track-card beginner-card">
+            <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M2 7h3m6 0h11M2 17h11m6 0h3m-6-10v7"/>
+              <rect class="blue" x="5" y="4" width="6" height="6" rx="1"/>
+              <circle class="pink" cx="16" cy="17" r="3"/>
+              <path d="M16 15.5v3m-1.5-1.5h3"/>
+              <circle cx="16" cy="7" r="1" fill="currentColor"/>
+            </svg>
+            <div>
+              <strong>Intro to Quantum Computing</strong>
+              <span class="track-note">No prior experience required.</span>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Ryan -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <div class="card team-card h-100 text-center">
-          <img src="assets/Ryan.jpg" alt="Host Five portrait" class="team-photo">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">Ryan Batubara</h5>
-            <div class="text-muted mb-3">Co-Organizer</div>
-            <div class="mt-auto d-flex justify-content-center gap-3">
-              <a href="mailto:rbatubara@ucsd.edu" aria-label="Email Host Five">
-                <img src="assets/mail_icon.png" alt="Email" class="icon-link">
-              </a>
-              <a href="https://www.linkedin.com/in/ryanbatubara/" target="_blank" rel="noopener" aria-label="LinkedIn Host Five">
-                <img src="assets/linkedin_icon.png" alt="LinkedIn" class="icon-link">
-              </a>
-            </div>
-          </div>
+        <div class="event-track">
+          <h3>Intermediate Track</h3>
+          <ul class="card-grid" role="list">
+            <li class="track-card">
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 7v4m-7 6v-3a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v3"/>
+                <rect class="blue" x="9" y="2" width="6" height="5" rx="1"/>
+                <rect class="pink" x="2" y="17" width="6" height="5" rx="1"/>
+                <rect class="gold" x="16" y="17" width="6" height="5" rx="1"/>
+              </svg>
+              <strong>Quantum Algorithms</strong>
+            </li>
+            <li class="track-card">
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M2 12h2m7 0h2m7 0h2M7.5 5v3.5m9 7V19"/>
+                <circle class="pink" cx="7.5" cy="12" r="3.5"/>
+                <circle cx="16.5" cy="12" r="3.5" fill="#7fdccc"/>
+              </svg>
+              <strong>Intro to ZX Calculus</strong>
+            </li>
+            <li class="track-card">
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <ellipse cx="12" cy="12" rx="10" ry="4.5"/>
+                <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/>
+                <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-60 12 12)"/>
+                <circle class="gold" cx="12" cy="12" r="1.5"/>
+              </svg>
+              <strong>Intro to Quantum Physics</strong>
+            </li>
+            <li class="track-card">
+              <svg class="sticker-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path class="blue" d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5z"/>
+                <path d="m8.5 12 2.5 2.5 4.5-5"/>
+              </svg>
+              <strong>Intro to Quantum Error Correction</strong>
+            </li>
+          </ul>
         </div>
       </div>
+    </section>
+  </main>
 
-      <!-- Owen -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <div class="card team-card h-100 text-center">
-          <img src="assets/Owen.jpg" alt="Host Two portrait" class="team-photo">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">Owen Parsley</h5>
-            <div class="text-muted mb-3">Co-Organizer</div>
-            <div class="mt-auto d-flex justify-content-center gap-3">
-              <a href="mailto:oparsley@ucsd.edu" aria-label="Email Host Two">
-                <img src="assets/mail_icon.png" alt="Email" class="icon-link">
-              </a>
-              <a href=" https://www.linkedin.com/in/oparsley/" target="_blank" rel="noopener" aria-label="LinkedIn Host Two">
-                <img src="assets/linkedin_icon.png" alt="LinkedIn" class="icon-link">
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Aiden -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <div class="card team-card h-100 text-center">
-          <img src="assets/Aiden.jpg" alt="Host Three portrait" class="team-photo">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">Aiden Li</h5>
-            <div class="text-muted mb-3">Co-Organizer</div>
-            <div class="mt-auto d-flex justify-content-center gap-3">
-              <a href="mailto:ail016@ucsd.edu" aria-label="Email Host Three">
-                <img src="assets/mail_icon.png" alt="Email" class="icon-link">
-              </a>
-              <a href="https://www.linkedin.com/in/aiden-li7/" target="_blank" rel="noopener" aria-label="LinkedIn Host Three">
-                <img src="assets/linkedin_icon.png" alt="LinkedIn" class="icon-link">
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      
-      <!-- Nikola -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <div class="card team-card h-100 text-center">
-          <img src="assets/Crop_Einstein.png" alt="Host Four portrait" class="team-photo">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1">Dr. Nikola Alic</h5>
-            <div class="text-muted mb-3">Faculty Advisor</div>
-            <div class="mt-auto d-flex justify-content-center gap-3">
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- Registration -->
-<section id="registration" class="panel">
-  <div class="container text-center position-relative mega-cta">
-    <h2 class="section-heading mb-4">Secure your place in the UCSD Qiskit Fall Fest</h2>
-
-    <!-- Big Button -->
-    <a href="https://forms.gle/ucPUUmWgdj4vhL896" target="_blank" class="btn btn-register btn-lg">
-      Register Now
-    </a>
-
-    <!-- Sticker images -->
-    <img src="assets/Atom_01.png" alt="Atom sticker" class="sticker sticker-left">
-    <img src="assets/Timeline_01.png" alt="Timeline sticker" class="sticker sticker-right">
-
-  </div>
-</section>
-
-  <footer class="py-4 text-center">
-    <div class="container">
-      <small>© 2026 QCSA@UCSD</small>
-    </div>
+  <footer>
+    <div class="wrap">© Quantum Computing at UC San Diego</div>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
